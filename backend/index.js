@@ -1,24 +1,27 @@
 import express from 'express';
+import cors from 'cors';
+
+import doctorRoutes from './routes/doctors.js';
+import patientRoutes from './routes/patients.js';
+
 const app = express();
 const port = process.env.PORT || 3000; // You can change the port number as needed
 
+// Middleware to handle CORS (Cross-Origin Resource Sharing)
+app.use(cors());
 // Middleware to parse JSON requests
 app.use(express.json());
-
-// Middleware to handle CORS (Cross-Origin Resource Sharing)
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
 
 // Define a sample route
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
+
+// Doctor Routes
+app.use('/doctor', doctorRoutes);
+
+// Patient Routes
+app.use('/patient', patientRoutes);
 
 // Start the server
 app.listen(port, () => {
