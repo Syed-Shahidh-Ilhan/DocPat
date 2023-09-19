@@ -2,7 +2,7 @@ import {mongoose} from "mongoose"
 const {Schema} = mongoose
 
 const doctorSchema = new Schema({
-    name: String
+    name: {type:String,required:true}
 });
 
-exports = mongoose.model('Doctor', doctorSchema);
+export default  mongoose.model('Doctor', doctorSchema);
