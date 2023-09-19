@@ -1,4 +1,7 @@
 import express from 'express';
+import dotenv from 'dotenv'
+dotenv.config()
+import './db/mongoose.js'
 const app = express();
 const port = process.env.PORT || 3000; // You can change the port number as needed
 

@@ -1,10 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 mongoose
   .connect(
-    process.env.connectionString, 
+    "mongodb+srv://ilhansyed:devrev123@cluster0.daiu1xh.mongodb.net/?retryWrites=true&w=majority", 
     {
     useNewUrlParser: true,
     useUnifiedTopology:true
   })
   .then(console.log("mongo connected"));
+
