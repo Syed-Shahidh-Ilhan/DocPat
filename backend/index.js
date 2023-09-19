@@ -49,7 +49,6 @@ app.post('/createAppointment',async (req,res)=>{
   var appointment = new Appointment()
   appointment.doctorID = req.body.doctor
   appointment.patientID = req.body.patient
-  console.log(appointment)
   await appointment.save()
   res.send("successfully created")
 })
