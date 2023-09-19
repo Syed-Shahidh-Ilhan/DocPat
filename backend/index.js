@@ -1,4 +1,7 @@
 import express from 'express';
+import dotenv from 'dotenv'
+dotenv.config()
+import './db/mongoose.js'
 import cors from 'cors';
 
 import doctorRoutes from './routes/doctors.js';
