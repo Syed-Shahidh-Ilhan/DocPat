@@ -1,6 +1,7 @@
 import {mongoose} from "mongoose"
+const {Schema} = mongoose
 
-const patientSchema = new mongoose.Schema({
+const patientSchema = new Schema({
   name:{type:String,required:true}
   });
 
