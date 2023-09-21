@@ -2,6 +2,7 @@ import {mongoose} from "mongoose"
 
 const doctorSchema = new mongoose.Schema({
     name: {type:String,required:true},
+    age:{type:Number,required:true},
     specialization:{type:String},
     email:{type:String},
     password:{type:String}

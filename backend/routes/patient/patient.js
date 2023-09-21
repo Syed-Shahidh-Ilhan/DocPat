@@ -2,34 +2,59 @@ import express from "express"
 import "dotenv/config"
 const router = express.Router()
 import jwt from "jsonwebtoken"
+import Patient from "../../models/Patient.js"
+import Doctor from "../../models/Doctor.js"
+import bcrypt from "bcrypt"
 //middleware
 function auth(req,res,next){
-    const authHead = req.headers.authorization
-    if(authHead){
-    const token = authHead.split(" ")[1]
-    const {email,password} = jwt.verify(token,process.env.JWTSECRET)
+    const token = req.headers.authorization
+    try{
+    const {id,role} = jwt.verify(token,process.env.JWTSECRET)
     req.user = {}
-    req.user.email = email
-    req.user.password = password
+    req.user.id = id
+    req.user.role = role
     next()}
-    else{
-        res.send("unauthorized")
+    catch{
+        res.json({status:0,message:"unauthorized"})
     }
 }
-
-//handlers
+//public Endoints
 router.post('/signin',async(req,res)=>{
-    const {email,password,name,age,gender} = req.body
-    res.redirect("/patient/login")
+    const email = req.body.email
+    if(await Patient.findOne({email:email})){
+        return res.json({status:0,message:`User with email ${email} already exists`})
+    }
+    var patient = new Patient(req.body)
+    await patient.save()
+    res.json({status:1,message:"success"})
 })
 router.post('/login',async (req,res)=>{
     const {email,password} = req.body
-    const payload={email:email,password:password}
+    const user = await Patient.findOne({email:email})
+    if(!user){
+        return res.json({status:0,message:`User with email ${email} does not exists`})
+    }
+    if(!await bcrypt.compare(password, user.password)){
+        return res.send({status:0,message:"Invalid password"})
+    }
+    const payload={id:user._id,role:"Patient"}
     const token = jwt.sign(payload,process.env.JWTSECRET)
-    res.send(token)
+    res.json({status:1,message:"success",authToken:token})
+})
+router.post('/getDoctors',auth,async(req,res)=>{
+    const options = req.body
+    const doctors = await Doctor.find(options).select({_id:0,password:0,__v:0})
+    res.send(doctors)
+})
+
+//Temp Dev Endpoints
+router.get('/list',async(req,res)=>{
+    var patients = await Patient.find({})
+    res.send(patients)
 })
 router.get('/details',auth,async(req,res)=>{
-    res.send(`email ${req.user.email} and password ${req.user.password}`)
+    var patient = await Patient.findOne({'_id':req.user.id})
+    res.send(patient)
 })
 
 export default router
