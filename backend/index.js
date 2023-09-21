@@ -6,7 +6,7 @@ import './db/mongoose.js'
 import cors from 'cors';
 
 //route imports
-import patientRoutes from './routes/patient.js';
+import patientRoutes from './routes/patient/patient.js';
 
 const app = express();
 const port = process.env.PORT || 8000; // You can change the port number as needed
@@ -22,14 +22,11 @@ app.get('/', (req, res) => {
 });
 
 // Doctor Routes
-app.use('/doctor', doctorRoutes);
+//app.use('/doctor', doctorRoutes);
 
 // Patient Routes
 app.use('/patient', patientRoutes);
 
-// Appointment routes
-
-app.use('/appointment',appointmentRoutes);
 
 // Start the server
 app.listen(port, () => {

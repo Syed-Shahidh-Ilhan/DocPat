@@ -1,9 +1,6 @@
 import express from "express"
 import "dotenv/config"
 const router = express.Router()
-import doctorRoutes from "./patient/doctors.js"
-import patientRoutes from "./patient/patients.js"
-import appointmentRoutes from "./patient/appointments.js"
 import jwt from "jsonwebtoken"
 //middleware
 function auth(req,res,next){
@@ -35,8 +32,4 @@ router.get('/details',auth,async(req,res)=>{
     res.send(`email ${req.user.email} and password ${req.user.password}`)
 })
 
-//routes
-router.use('/doctor',doctorRoutes)
-router.use('/patient',patientRoutes)
-router.use('/appointment',appointmentRoutes)
 export default router
