@@ -1,10 +1,5 @@
 import {mongoose} from "mongoose"
 
-// const appointmentSchema = new Schema({
-//     doctorID :{type: Schema.Types.ObjectId,ref:'Doctor',required:true},
-//     patientID :{type: Schema.Types.ObjectId,ref:'Patient',required:true},
-//     time : {type:Date,default:()=> new Date()}
-//   });
 
 const appointmentSchema = new mongoose.Schema({
     patientId: {

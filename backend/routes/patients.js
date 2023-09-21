@@ -1,11 +1,11 @@
 import express from 'express';
-import { getPatientAppointments } from '../controllers/patients.js'
-
+import Patient from "../models/Patient.js"
+import mongoose from 'mongoose';
+const { ObjectId } = mongoose.Types;
 const router = express.Router();
 
-router.get('/appointments/:id', getPatientAppointments);
 
-router.post('/patient',async (req,res)=>{
+router.post('/create',async (req,res)=>{
     const patientName = req.body.name
     var patient = new Patient()
     patient.name = patientName
@@ -13,7 +13,7 @@ router.post('/patient',async (req,res)=>{
     res.send("successfully created")
 })
 
-router.get('/patients',async (req,res)=>{
+router.get('/list',async (req,res)=>{
     var patients = await Patient.find({})
     res.send(patients)
 })
