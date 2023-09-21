@@ -1,15 +1,12 @@
+
 import express from 'express';
 import dotenv from 'dotenv'
 dotenv.config()
 import './db/mongoose.js'
 import cors from 'cors';
-//mongo models imports
 
 //route imports
-import doctorRoutes from './routes/doctors.js';
-import patientRoutes from './routes/patients.js';
-import appointmentRoutes from './routes/appointments.js'
-
+import patientRoutes from './routes/patient.js';
 
 const app = express();
 const port = process.env.PORT || 8000; // You can change the port number as needed
