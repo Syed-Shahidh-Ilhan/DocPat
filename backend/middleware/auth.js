@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const <> = require("../models/user");
+const user = require("../models/user");
 const auth = async (req, res, next) => {
   try {
     // const token = req.header("Authorization").replace("Bearer ", "");
@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
     // console.log(token); //remove
     const decoded = jwt.verify(token, "alwayslookonthebrightside");
     // console.log(decoded._id); //remove
-    const <> = await User.findOne({
+    const user = await User.findOne({
       _id: decoded._id,
       "tokens.token": token,
     });
