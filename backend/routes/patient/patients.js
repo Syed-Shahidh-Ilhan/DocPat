@@ -3,7 +3,14 @@ import Patient from '../../models/Patient.js'
 
 const router = express.Router();
 
-
+router.post('/signin',async(req,res)=>{
+    const {email,password,name,age,gender} = req.body
+    res.send("success")
+})
+router.post('/login',async (req,res)=>{
+    const {email,password} = req.body
+    res.send("success")
+})
 router.post('/createPatient',async (req,res)=>{
     const patientName = req.body.name
     var patient = new Patient()
