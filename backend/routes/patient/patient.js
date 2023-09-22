@@ -43,7 +43,7 @@ router.post('/login',async (req,res)=>{
 })
 router.post('/getDoctors',auth,async(req,res)=>{
     const options = req.body
-    const doctors = await Doctor.find(options).select({_id:0,password:0,__v:0})
+    const doctors = await Doctor.find(options).select({_id:0,password:0})
     res.send(doctors)
 })
 
