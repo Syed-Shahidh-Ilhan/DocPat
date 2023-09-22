@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import Patient from "../../models/Patient.js"
 import Doctor from "../../models/Doctor.js"
 import bcrypt from "bcrypt"
+import Appointment from "../../models/Appointment.js"
 //middleware
 function auth(req,res,next){
     const token = req.headers.authorization
@@ -39,7 +40,7 @@ router.post('/login',async (req,res)=>{
         return res.json({status:0,message:`User with email ${email} does not exists`})
     }
     if(!await bcrypt.compare(password, user.password)){
-        return res.send({status:0,message:"Invalid password"})
+        return res.json({status:0,message:"Invalid password"})
     }
     const payload={id:user._id,role:"Patient"}
     const token = jwt.sign(payload,process.env.JWTSECRET)
@@ -47,18 +48,33 @@ router.post('/login',async (req,res)=>{
 })
 router.post('/getDoctors',auth,async(req,res)=>{
     const options = req.body
-    const doctors = await Doctor.find(options).select({_id:0,password:0})
-    res.send(doctors)
+    const doctors = await Doctor.find(options).select({password:0,__v:0})
+    res.json(doctors)
 })
+router.post('/setAppointment',auth,async(req,res)=>{
+    var patient = await Patient.findOne({_id:req.user.id})
+    var doctor = await Doctor.findOne({_id:req.body.docId})
+    var booked = await Appointment.find({doctorId:req.body.docId,time:req.body.time})
+    if(booked.length!=0)return res.status(400).json({message:"bad req"})
+    var date = new Date(req.body.time)
+    var time = date.getHours()
+    if((time<9) && (time>18))return res.status(400).json({message:"bad req"})
+    var appointment = new Appointment({patientId:patient._id,doctorId:doctor._id,time:req.body.time})
+    appointment.save()
+    res.json({message:"booked"})
 
+})
 //Temp Dev Endpoints
 router.get('/list',async(req,res)=>{
     var patients = await Patient.find({})
-    res.send(patients)
+    res.json(patients)
 })
 router.get('/details',auth,async(req,res)=>{
     var patient = await Patient.findOne({'_id':req.user.id})
-    res.send(patient)
+    res.json(patient)
 })
-
+router.get('/appointments',async(req,res)=>{
+    var appointments = await Appointment.find({})
+    res.json(appointments)
+})
 export default router
