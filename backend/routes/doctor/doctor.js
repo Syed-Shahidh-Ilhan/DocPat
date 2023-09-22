@@ -4,6 +4,7 @@ import Appointment from "../../models/Appointment.js"
 import mongoose from 'mongoose';
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import Patient from '../../models/Patient.js';
 
 const { ObjectId } = mongoose.Types;
 // getting all the appointments for a doctor
@@ -55,13 +56,18 @@ router.post('/login',async(req,res)=>{
     }
     const token = jwt.sign({id:doctor._id,role:"Doctor"},process.env.JWTSECRET)
     res.json({status:1,message :"success",authToken:token})
+})
+
+//logout
+router.get('/logout',async(req,res)=>{
 
 })
 
 // get all appointments
-router.get('/appointments', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const doctorID = req.user.id 
-  
+    console.log(doctorID)
+    
     // Check if the doctorID is valid (you might want to do this check)
     if (!ObjectId.isValid(doctorID)) {
       return res.status(400).json({ error: 'Invalid doctorID' });
@@ -80,13 +86,24 @@ router.get('/appointments', auth, async (req, res) => {
     }
 });
 
+// get doctor's patient 
 
-// get all the doctors patients
+router.get('/patient/:id',auth,async(req,res)=>{
+    const patientID = req.params.id
+    const patient = await Patient.findById(patientID);
+
+    if (!patient) {
+      return res.status(404).json({ message: 'Doctor not found' });
+    }
+
+    // If the doctor is found, send it as a JSON response
+    res.json(patient);
+
+
+})
 
 
 
-
-// 
   
 // list all doctors
 router.get('/list',async (req,res)=>{
@@ -96,7 +113,8 @@ router.get('/list',async (req,res)=>{
     // res.send("great success")
 })
 
-// need to get doctor by id
+
+// need to get doctor by id - developer endpoint
 router.get('/:id',async(req,res)=>{
     const doctorId = req.params.id;
 
