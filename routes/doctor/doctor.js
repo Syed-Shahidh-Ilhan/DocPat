@@ -5,6 +5,8 @@ import auth from '../../middleware/auth/auth.js';
 
 // importing doctor controllers
 import { getAllAppointments, getDoctorById, getDoctorsPatient, listAllDoctors, login, signup } from '../../controllers/doctor/doctor.js'
+import {getDoctorAppointments} from '../../controllers/appointment/appointment.js'
+
 
 const router = express.Router()
 
@@ -13,10 +15,14 @@ const router = express.Router()
 router.post('/signup', signup);
 // login
 router.post('/login', login);
-// get all appointments
-router.get('/appointments', auth, getAllAppointments);
+// get all appointments (this is useless now because we have get doctor's patients below)
+router.get('/appointments', auth, getAllAppointments);ß
 // get doctor's patient 
 router.get('/patient/:id', auth, getDoctorsPatient);
+
+// get doctor's patients
+router.get('/patients',auth,getDoctorAppointments)
+
 
 // DEVELOPER ENDPOINTS
 // list all doctors

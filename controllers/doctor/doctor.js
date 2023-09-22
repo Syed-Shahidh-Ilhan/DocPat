@@ -21,6 +21,7 @@ export const login = async (req, res) => {
     const email = req.body.email
     const password = req.body.password
     let doctor = await Doctor.findOne({ email })
+    console.log(doctor)
     if (!doctor) {
         return res.json({ status: 0, message: `Doctor with email ${email} does not exist` })
     }
