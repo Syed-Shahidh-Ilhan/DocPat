@@ -6,7 +6,7 @@ import Doctor from "../../models/Doctor.js"
 
 export const createAppointment = async (req, res) => {
     if (req.user.role === "Doctor") {
-        
+
     } else if (req.user.role === "Patient") {
         var patient = await Patient.findOne({ _id: req.user.id })
         var doctor = await Doctor.findOne({ _id: req.body.docId })
@@ -19,24 +19,47 @@ export const createAppointment = async (req, res) => {
         appointment.save()
         res.json({ message: "booked" })
     }
-
 }
 
 export const getAppointments = async (req, res) => {
-    const id = req.user.id;
+    const id = req.user.id; // getting id of user from req object
     if (req.user.role === "Doctor") {
-        const result = await Appointment.find({ doctorId: id });
-        res.send(200).send(result);
+        try {
+            const result = await Appointment.find({ doctorId: id });    // using find function to get all appointments for doctor
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     } else if (req.user.role === "Patient") {
-        const result = await Appointment.find({ patientId: id });
-        res.send(200).send(result);
+        try {
+            const result = await Appointment.find({ patientId: id });   // using find function to get all appointments for patient
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }
 }
 
 export const updateAppointment = async (req, res) => {
-
+    const appointmentId = req.appointmentId;
+    try {
+        const result = await Appointment.findByIdAndUpdate(appointmentId, req.body); // finding by id and updating the appointment time
+        res.status(200).send(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
 }
 
 export const deleteAppointment = async (req, res) => {
-
+    const appointmentId = req.appointmentId;
+    try {
+        const result = await Appointment.findByIdAndDelete(appointmentId);  // finding by id and deleting 
+        res.status(200).send(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
 }
