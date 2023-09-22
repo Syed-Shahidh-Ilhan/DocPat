@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import "dotenv/config"
+import jwt from "jsonwebtoken"
+import "dotenv/config";
 
-export default auth = (req, res, next) => {
+const auth = (req, res, next) => {
     const token = req.headers.authorization
     // console.log(token.split(" ")[1])
     try {
@@ -11,7 +11,10 @@ export default auth = (req, res, next) => {
         req.user.role = role
         next()
     }
-    catch {
+    catch (error) {
+        console.log(error);
         res.json({ status: 0, message: "unauthorized" })
     }
 }
+
+export default auth;
