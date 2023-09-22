@@ -9,8 +9,12 @@ const appointmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Doctor', // Reference to the Doctor model
   },
-  time: Date,
-  completed: Boolean
+  time: {
+    type: Date,
+    required: true
+  },
+  completed: Boolean,
+  remarks: String
 });
 
 export default mongoose.model('Appointment', appointmentSchema);
