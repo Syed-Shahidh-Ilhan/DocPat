@@ -39,6 +39,8 @@ export const getAppointments = async (req, res) => {
             console.log(error);
             res.status(500).send(error);
         }
+    } else {
+        res.status(500).send("Server Error");
     }
 }
 
