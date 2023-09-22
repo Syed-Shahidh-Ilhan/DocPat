@@ -1,4 +1,3 @@
-
 import jwt from "jsonwebtoken"
 import Patient from "../../models/Patient.js"
 import Doctor from "../../models/Doctor.js"
