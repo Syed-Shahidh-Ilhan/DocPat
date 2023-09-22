@@ -19,7 +19,10 @@ function auth(req,res,next){
     }
 }
 //public Endoints
-router.post('/signin',async(req,res)=>{
+
+// no auth token after signup?
+// changed it to signup
+router.post('/signup',async(req,res)=>{
     const email = req.body.email
     if(await Patient.findOne({email:email})){
         return res.json({status:0,message:`User with email ${email} already exists`})
@@ -28,6 +31,7 @@ router.post('/signin',async(req,res)=>{
     await patient.save()
     res.json({status:1,message:"success"})
 })
+
 router.post('/login',async (req,res)=>{
     const {email,password} = req.body
     const user = await Patient.findOne({email:email})

@@ -1,4 +1,5 @@
 import {mongoose} from "mongoose"
+import bcrypt from 'bcrypt'
 
 const doctorSchema = new mongoose.Schema({
     name: {type:String,required:true},
@@ -15,4 +16,5 @@ doctorSchema.pre("save", async function (next) {
     }
     next();
 });
+
 export default  mongoose.model('Doctor', doctorSchema);
