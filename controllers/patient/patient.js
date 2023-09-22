@@ -44,11 +44,11 @@ export const login = async (req, res) => {
 
 export const getDoctors = async (req, res) => {
     try{
-    const options = req.body
+    const options = req.body.filter //expecting valid filter options in request body
     const doctors = await Doctor.find(options).select({ password: 0, __v: 0 })//excluding password and version fields
     res.json(doctors)}
     catch(error){
-        //invalid options
+        //invalid filter options
         res.status(500).send(error)
     }
 }
