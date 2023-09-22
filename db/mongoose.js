@@ -7,4 +7,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology:true
   })
-  .then(console.log("mongo connected"));
+  .then(console.log("mongo connected"))
+  .catch(error => {
+    console.log('Error while connecting to mongoDB', error);
+  });

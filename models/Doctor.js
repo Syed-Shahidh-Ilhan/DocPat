@@ -1,4 +1,4 @@
-import {mongoose} from "mongoose"
+import { mongoose } from "mongoose"
 import bcrypt from 'bcrypt'
 
 const doctorSchema = new mongoose.Schema(
@@ -29,11 +29,11 @@ const doctorSchema = new mongoose.Schema(
   });
 
 doctorSchema.pre("save", async function (next) {
-    const user = this;
-    if (user.isModified("password")) {
-      user.password = await bcrypt.hash(user.password, 8);
-    }
-    next();
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
 });
 
-export default  mongoose.model('Doctor', doctorSchema);
+export default mongoose.model('Doctor', doctorSchema);
