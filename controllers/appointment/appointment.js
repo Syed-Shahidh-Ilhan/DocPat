@@ -9,7 +9,7 @@ export const createAppointment = async (req, res) => {
 
     } else if (req.user.role === "Patient") {
         var patient = await Patient.findOne({ _id: req.user.id })
-        var doctor = await Doctor.findOne({ _id: req.body.docId })
+        var doctor = await Doctor.findOne({ _id: req.body.doctorId })
         var booked = await Appointment.find({ doctorId: req.body.docId, time: req.body.time })
         if (booked.length != 0) return res.status(400).json({ message: "bad req" })
         var date = new Date(req.body.time)
@@ -18,6 +18,26 @@ export const createAppointment = async (req, res) => {
         var appointment = new Appointment({ patientId: patient._id, doctorId: doctor._id, time: req.body.time })
         appointment.save()
         res.json({ message: "booked" })
+    }
+}
+
+export const getDoctorAppointments = async (req, res) => {
+    try {
+        const result = await Appointment.find({ doctorId: req.body.doctorId });    // using find function to get all appointments for doctor
+        res.status(200).send(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
+export const getPatientAppointments = async (req, res) => {
+    try {
+        const result = await Appointment.find({ patientId: req.body.patientId });   // using find function to get all appointments for patient
+        res.status(200).send(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
     }
 }
 
