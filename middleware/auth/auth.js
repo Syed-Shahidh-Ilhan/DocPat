@@ -10,17 +10,16 @@ const auth = (req, res, next) => {
         req.body[`${role.toLowerCase()}Id`] = id
         next();
     } catch (error) {
-        console.log(error);
-        res.json({ status: -1, message: "unauthorized" });
+        res.status(401).json({message: "unauthorized" });
     }
 }
 
 export const validDoctor = async (req,res,next)=>{
     try{
     var doctorId = req.body.doctorId
-    var doctor = await Doctor.findOne({_id:doctorId}).select({password:0,__v:0})
+    var doctor = await Doctor.findOne({_id:doctorId}).select({password:0,__v:0}) //excluding password and version fields
     if(!doctor)return res.status(400).json({message:`doctor with ID ${doctorId} does not exist`})
-    res.locals.doctor = doctor
+    res.locals.doctor = doctor //Indirectly passing doctor object for following middlewares
     next()}
     catch(error){
         res.status(500).send(error)
@@ -29,9 +28,9 @@ export const validDoctor = async (req,res,next)=>{
 export const validPatient = async (req,res,next)=>{
     try{
     var patientId = req.body.patientId
-    var patient = await Patient.findOne({_id:patientId}).select({password:0,__v:0})
+    var patient = await Patient.findOne({_id:patientId}).select({password:0,__v:0}) //excluding password and version fields
     if(!patient)return res.status(400).json({message:`patient with ID ${patientId} does not exist`})
-    res.locals.patient = patient
+    res.locals.patient = patient //Indirectly passing patient object for following middlewares
     next()}
     catch(error){
         res.status(500).send(error)
