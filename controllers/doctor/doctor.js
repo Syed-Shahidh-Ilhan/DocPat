@@ -8,33 +8,45 @@ import Patient from '../../models/Patient.js';
 const { ObjectId } = mongoose.Types;
 
 export const signup = async (req, res) => {
-    const email = req.body.email
-    if (await Doctor.findOne({ email })) {
-        return res.json({ status: 0, message: `Doctor with email ${email} already exists` })
+    try{
+        const email = req.body.email
+        if (await Doctor.findOne({ email })) {
+            return res.json({ status: 0, message: `Doctor with email ${email} already exists` })
+        }
+        let doctor = new Doctor(req.body)
+        await doctor.save()
+        res.json({ status: 1, message: "success" })
     }
-    let doctor = new Doctor(req.body)
-    await doctor.save()
-    res.json({ status: 1, message: "success" })
+    catch(error){
+        //invalid req.body 
+        res.status(500).send(error)
+    }
+    
 }
 
 export const login = async (req, res) => {
-    const email = req.body.email
-    const password = req.body.password
-    let doctor = await Doctor.findOne({ email })
-    console.log(doctor)
-    if (!doctor) {
-        return res.json({ status: 0, message: `Doctor with email ${email} does not exist` })
+    try{
+        const email = req.body.email
+        const password = req.body.password
+        let doctor = await Doctor.findOne({ email })
+        console.log(doctor)
+        if (!doctor) {
+            return res.json({ status: 0, message: `Doctor with email ${email} does not exist` })
+        }
+        if (!(await bcrypt.compare(password, doctor.password))) {
+            return res.json({ status: 0, message: `Invalid password` })
+        }
+        const token = jwt.sign({ id: doctor._id, role: "Doctor" }, process.env.JWTSECRET)
+        res.json({ status: 1, message: "success", authToken: token })
     }
-    if (!(await bcrypt.compare(password, doctor.password))) {
-        return res.json({ status: 0, message: `Invalid password` })
+    catch{
+         //invalid req.body 
+         res.status(500).send(error)
     }
-    const token = jwt.sign({ id: doctor._id, role: "Doctor" }, process.env.JWTSECRET)
-    res.json({ status: 1, message: "success", authToken: token })
 }
 
 export const getAllAppointments = async (req, res) => {
     const doctorID = req.user.id
-    console.log(doctorID)
 
     // check if the doctorID is valid (you might want to do this check)
     if (!ObjectId.isValid(doctorID)) {
