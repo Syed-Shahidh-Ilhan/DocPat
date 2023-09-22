@@ -7,7 +7,8 @@ import cors from 'cors';
 
 //route imports
 import patientRoutes from './routes/patient/patient.js';
-import doctorRoutes from './routes/doctor/doctor.js'
+import doctorRoutes from './routes/doctor/doctor.js';
+import appointmentRoutes from './routes/appointment/appointment.js';
 
 const app = express();
 const port = process.env.PORT || 8000; // You can change the port number as needed
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 // Patient Routes
 app.use('/patient', patientRoutes);
 app.use('/doctor', doctorRoutes);
+app.use('/appointment', appointmentRoutes);
 
 // Start the server
 app.listen(port, () => {
