@@ -21,7 +21,7 @@ const doctorSchema = new mongoose.Schema(
     email:{
       type:String
     },
-    
+
     password:{
       type:String
     }

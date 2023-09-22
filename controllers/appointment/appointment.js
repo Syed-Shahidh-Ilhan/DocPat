@@ -49,6 +49,7 @@ export const getPatientAppointments = async (req, res) => {
     }
 }
 
+// remove this
 export const getAppointments = async (req, res) => {
     const id = req.user.id; // getting id of user from req object
     if (req.user.role === "Doctor") {
