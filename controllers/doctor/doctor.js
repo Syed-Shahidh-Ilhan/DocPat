@@ -11,11 +11,11 @@ export const signup = async (req, res) => {
     try{
         const email = req.body.email
         if (await Doctor.findOne({ email })) {
-            return res.json({ status: 0, message: `Doctor with email ${email} already exists` })
+            return res.status(400).json({message: `Doctor with email ${email} already exists`})
         }
         let doctor = new Doctor(req.body)
         await doctor.save()
-        res.json({ status: 1, message: "success" })
+        res.json({message: "success" })
     }
     catch(error){
         //invalid req.body 
@@ -31,13 +31,13 @@ export const login = async (req, res) => {
         let doctor = await Doctor.findOne({ email })
         console.log(doctor)
         if (!doctor) {
-            return res.json({ status: 0, message: `Doctor with email ${email} does not exist` })
+            return res.status(400).json({message: `Doctor with email ${email} does not exist` })
         }
         if (!(await bcrypt.compare(password, doctor.password))) {
-            return res.json({ status: 0, message: `Invalid password` })
+            return res.status(400).json({message: `Invalid password` })
         }
         const token = jwt.sign({ id: doctor._id, role: "Doctor" }, process.env.JWTSECRET)
-        res.json({ status: 1, message: "success", authToken: token })
+        res.json({message: "success", authToken: token })
     }
     catch{
          //invalid req.body 
@@ -70,7 +70,7 @@ export const getDoctorsPatient = async (req, res) => {
     const patient = await Patient.findById(patientID);
 
     if (!patient) {
-        return res.status(404).json({ message: 'Doctor not found' });
+        return res.status(400).json({ message: 'Doctor not found' });
     }
     // if the doctor is found, send it as a JSON response
     res.json(patient);
@@ -90,7 +90,7 @@ export const getDoctorById = async (req, res) => {
     // replace the following line with your actual database retrieval logic
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
-        return res.status(404).json({ message: 'Doctor not found' });
+        return res.status(400).json({ message: 'Doctor not found' });
     }
     // if the doctor is found, send it as a JSON response
     res.json(doctor);
