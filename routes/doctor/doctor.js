@@ -29,5 +29,7 @@ router.get('/patients',auth,getDoctorAppointments)
 router.get('/list', listAllDoctors);
 // need to get doctor by id - developer endpoint
 router.get('/:id', getDoctorById);
+// need to get doctor's rating by id
+
 
 export default router;

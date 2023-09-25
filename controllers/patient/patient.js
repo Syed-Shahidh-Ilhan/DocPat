@@ -61,6 +61,23 @@ export const getDoctor = async (req,res)=>{
         res.status(500).send(error)
     }
 }
+export const rateDoctor = async (req,res)=>{
+    try{
+        var doctor = res.locals.doctor
+        var newRating = req.body.rating
+        if(newRating<0 || newRating>5)newRating = 0
+        const patientsRated = doctor.patientsRated
+        const rating = doctor.rating
+        const currentRating = (rating*patientsRated+newRating)/(patientsRated+1)
+        doctor.rating = currentRating
+        doctor.patientsRated+=1
+        doctor.save()
+        res.json({message:"success"})
+    }
+    catch(error){
+        res.status(500).send(error)
+    }
+}
 
 //Temp Dev  -- ignore 
 export const listAllPatients = async (req, res) => {

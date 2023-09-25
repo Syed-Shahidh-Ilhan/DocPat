@@ -24,6 +24,15 @@ const doctorSchema = new mongoose.Schema(
 
     password:{
       type:String
+    },
+
+    // no of patients that have rated the doctor out of 5
+    patientsRated :{
+      type:Number
+    },
+    // average rating out of 5
+    rating:{
+      type:Number
     }
 
   });

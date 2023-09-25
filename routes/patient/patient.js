@@ -36,7 +36,6 @@ router.post('/setAppointment', auth, createAppointment);
 
 router.post('/getPatientAppointments',auth,getPatientAppointments);
 
-
 //Temp Dev Endpoints
 router.get('/list', listAllPatients);
 
