@@ -25,7 +25,7 @@ router.get('/patients',auth,getDoctorAppointments)
 
 // delete doctor appointments
 
-router.delete('/deleteAppointment',auth,deleteAppointment)
+router.delete('/deleteAppointment/:appointmentId',auth,deleteAppointment)
 
 
 // DEVELOPER ENDPOINTS

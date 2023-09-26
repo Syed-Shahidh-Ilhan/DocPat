@@ -44,7 +44,7 @@ router.post('/getPatientAppointments',auth,getPatientAppointments);
 
 router.post('/rateDoctor',auth,validDoctor,rateDoctor);
 
-router.post('/deleteAppointment',auth,deleteAppointment)
+router.delete('/deleteAppointment/:appointmentId',auth,deleteAppointment)
 
 //Temp Dev Endpoints
 router.get('/list', listAllPatients);
