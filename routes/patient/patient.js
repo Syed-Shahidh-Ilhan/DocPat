@@ -13,7 +13,8 @@ import {
     login, 
     patientDetails,  
     signup,
-    getDoctor
+    getDoctor,
+    rateDoctor
  } from "../../controllers/patient/patient.js"
 
  import { getDoctorAppointments,createAppointment, getPatientAppointments } from "../../controllers/appointment/appointment.js"
@@ -36,6 +37,7 @@ router.post('/setAppointment', auth, createAppointment);
 
 router.post('/getPatientAppointments',auth,getPatientAppointments);
 
+router.post('/rateDoctor',auth,validDoctor,rateDoctor);
 
 //Temp Dev Endpoints
 router.get('/list', listAllPatients);
