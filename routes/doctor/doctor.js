@@ -16,7 +16,7 @@ router.post('/signup', signup);
 // login
 router.post('/login', login);
 // get all appointments (this is useless now because we have get doctor's patients below)
-router.get('/appointments', auth, getAllAppointments);ß
+router.get('/appointments', auth, getAllAppointments);
 // get doctor's patient 
 router.get('/patient/:id', auth, getDoctorsPatient);
 

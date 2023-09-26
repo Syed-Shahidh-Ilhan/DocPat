@@ -37,7 +37,7 @@ export const login = async (req, res) => {
             return res.status(400).json({message: `Invalid password` })
         }
         const token = jwt.sign({ id: doctor._id, role: "Doctor" }, process.env.JWTSECRET)
-        res.json({message: "success", authToken: token })
+        res.json({message: "success", authToken: token ,name:req.body.name})
     }
     catch{
          //invalid req.body 

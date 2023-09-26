@@ -18,7 +18,6 @@ const appointmentSchema = new mongoose.Schema({
     required: true
   },
   completed: Boolean,
-  remarks: String
 });
 
 export default mongoose.model('Appointment', appointmentSchema);
