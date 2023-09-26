@@ -31,11 +31,15 @@ export const createAppointment = async (req, res) => {
 
 export const getDoctorAppointments = async (req, res) => {
     const sortingOrder = req.query.sort;
+    const currentTime = Date.now();
     try {
-        const result = await Appointment.find({ doctorId: req.body.doctorId, }).populate("patientId").sort({
+        const pastAppointments = await Appointment.find({ doctorId: req.body.doctorId, time: {$lt: currentTime} }).populate("patientId").sort({
             time: sortingOrder === 'a' ? 1 : -1
         });    // using find function to get all appointments for doctor
-        res.status(200).send(result);
+        const futureAppointments = await Appointment.find({ doctorId: req.body.doctorId, time: {$gt: currentTime} }).populate("patientId").sort({
+            time: sortingOrder === 'a' ? 1 : -1
+        });
+        res.status(200).send({pastAppointments, futureAppointments});
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message);
@@ -52,30 +56,6 @@ export const getPatientAppointments = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message);
-    }
-}
-
-// remove this
-export const getAppointments = async (req, res) => {
-    const id = req.user.id; // getting id of user from req object
-    if (req.user.role === "Doctor") {
-        try {
-            const result = await Appointment.find({ doctorId: id }).populate("patientId");    // using find function to get all appointments for doctor
-            res.status(200).send(result);
-        } catch (error) {
-            console.log(error);
-            res.status(500).send(error.message);
-        }
-    } else if (req.user.role === "Patient") {
-        try {
-            const result = await Appointment.find({ patientId: id }).populate("doctorId");   // using find function to get all appointments for patient
-            res.status(200).send(result);
-        } catch (error) {
-            console.log(error);
-            res.status(500).send(error);
-        }
-    } else {
-        res.status(500).send("Server Error");
     }
 }
 
