@@ -23,19 +23,19 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
     try{
     const { email, password } = req.body
-    const user = await Patient.findOne({ email: email })
+    const patient = await Patient.findOne({ email: email })
     //checking if User exists
-    if (!user) {
+    if (!patient) {
         return res.status(400).json({message: `User with email ${email} does not exists`})
     }
     //checking whether password matches
     if (!await bcrypt.compare(password, user.password)) {
         return res.status(400).json({message: "Invalid password" })
     }
-    const payload = { id: user._id, role: "Patient" }
+    const payload = { id: patient._id, role: "Patient" }
     //generating auth token
     const token = jwt.sign(payload, process.env.JWTSECRET)
-    res.json({message: "success", authToken: token })}
+    res.json({message: "success", authToken: token,name:patient.name})}
     catch(error){
         //invalid req.body 
         res.status(500).send(error)
