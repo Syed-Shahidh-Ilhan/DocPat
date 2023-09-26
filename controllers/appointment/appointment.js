@@ -22,7 +22,7 @@ export const createAppointment = async (req, res) => {
             res.json({ status: 0, message: "time outside working hours" });
             return;
         }
-        await Appointment.create({ patientId: req.user.id, doctorId: req.body.doctorId, time: date, status: 'booked' });
+        await Appointment.create({ patientId: req.user.id, doctorId: req.body.doctorId, time: date });
         res.json({ status: 1, message: "appointment created successfully" });
     } catch (error) {
         res.json({ status: 0, message: error.message })
