@@ -17,7 +17,12 @@ import {
     rateDoctor
  } from "../../controllers/patient/patient.js"
 
- import { getDoctorAppointments,createAppointment, getPatientAppointments } from "../../controllers/appointment/appointment.js"
+ import { 
+    getDoctorAppointments,
+    createAppointment, 
+    getPatientAppointments,
+    deleteAppointment
+} from "../../controllers/appointment/appointment.js"
 
 //public Endoints
 
@@ -38,6 +43,8 @@ router.post('/setAppointment', auth, createAppointment);
 router.post('/getPatientAppointments',auth,getPatientAppointments);
 
 router.post('/rateDoctor',auth,validDoctor,rateDoctor);
+
+router.post('/deleteAppointment',auth,deleteAppointment)
 
 //Temp Dev Endpoints
 router.get('/list', listAllPatients);
