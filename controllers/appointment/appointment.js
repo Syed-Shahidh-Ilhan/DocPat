@@ -30,8 +30,11 @@ export const createAppointment = async (req, res) => {
 }
 
 export const getDoctorAppointments = async (req, res) => {
+    const sortingOrder = req.query.sortingOrder;
     try {
-        const result = await Appointment.find({ doctorId: req.body.doctorId, }).populate("patientId").sort({time:-1});    // using find function to get all appointments for doctor
+        const result = await Appointment.find({ doctorId: req.body.doctorId, }).populate("patientId").sort({
+            time: sortingOrder === 'ascending' ? 1 : -1
+        });    // using find function to get all appointments for doctor
         res.status(200).send(result);
     } catch (error) {
         console.log(error);
@@ -41,7 +44,7 @@ export const getDoctorAppointments = async (req, res) => {
 
 export const getPatientAppointments = async (req, res) => {
     try {
-        const result = await Appointment.find({ patientId: req.body.patientId }).populate("doctorId");   // using find function to get all appointments for patient
+        const result = await Appointment.find({ patientId: req.body.patientId }).populate("doctorId").sort({time:-1});   // using find function to get all appointments for patient
         res.status(200).send(result);
     } catch (error) {
         console.log(error);
