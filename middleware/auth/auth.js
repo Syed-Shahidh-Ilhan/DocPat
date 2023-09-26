@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
     const token = req.headers.authorization
     try {
         const { id, role } = jwt.verify(token.split(" ")[1], process.env.JWTSECRET);
-        req.user = { id, role };
+        req.user = { id, role }; //to be removed
         req.body[`${role.toLowerCase()}Id`] = id
         next();
     } catch (error) {

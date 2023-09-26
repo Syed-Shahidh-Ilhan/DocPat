@@ -74,6 +74,7 @@ export const getAppointments = async (req, res) => {
 }
 
 export const updateAppointment = async (req, res) => {
+    // const appointment = res.locals.appointment (Appointment object)
     const appointmentId = req.body.appointmentId;
     try {
         const result = await Appointment.findByIdAndUpdate(appointmentId, req.body); // finding by id and updating the appointment time
