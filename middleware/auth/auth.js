@@ -36,4 +36,17 @@ export const validPatient = async (req,res,next)=>{
         res.status(500).send(error)
     }
 }
+
+export const validAppointment = async(req,res,next)=>{
+    try{
+    // first check if the logged in user is patient or doctor
+        
+    // then get appointmentid from req.body
+    // find appointment by appointment id and doctor id 
+        
+    }
+    catch{
+
+    }
+}
 export default auth
