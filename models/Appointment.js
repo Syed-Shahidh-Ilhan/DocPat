@@ -17,7 +17,10 @@ const appointmentSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  completed: Boolean,
+  status: {
+    type: String,
+    enum: ['booked', 'completed', 'missed']
+  }
 });
 
 export default mongoose.model('Appointment', appointmentSchema);
