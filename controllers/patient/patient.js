@@ -64,13 +64,13 @@ export const getDoctor = async (req,res)=>{
 export const rateDoctor = async (req,res)=>{
     try{
         var doctor = res.locals.doctor
-        var newRating = req.body.rating
+        var newRating = parseInt(req.body.rating)
         if(newRating<0 || newRating>5)newRating = 0
-        const patientsRated = doctor.patientsRated
-        const rating = doctor.rating
+        const patientsRated = doctor.patientsRated||0
+        const rating = doctor.rating||0
         const currentRating = (rating*patientsRated+newRating)/(patientsRated+1)
         doctor.rating = currentRating
-        doctor.patientsRated+=1
+        doctor.patientsRated = patientsRated+1
         doctor.save()
         res.json({message:"success"})
     }
