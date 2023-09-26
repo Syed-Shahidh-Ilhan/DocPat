@@ -74,7 +74,7 @@ export const getAppointments = async (req, res) => {
 }
 
 export const updateAppointment = async (req, res) => {
-    const appointmentId = req.appointmentId;
+    const appointmentId = req.body.appointmentId;
     try {
         const result = await Appointment.findByIdAndUpdate(appointmentId, req.body); // finding by id and updating the appointment time
         res.status(200).send(result);
@@ -85,7 +85,7 @@ export const updateAppointment = async (req, res) => {
 }
 
 export const deleteAppointment = async (req, res) => {
-    const appointmentId = req.appointmentId;
+    const appointmentId = req.body.appointmentId;
     try {
         const result = await Appointment.findByIdAndDelete(appointmentId);  // finding by id and deleting 
         res.status(200).send(result);
