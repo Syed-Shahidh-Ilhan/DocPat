@@ -5,7 +5,7 @@ import auth from '../../middleware/auth/auth.js';
 
 // importing doctor controllers
 import { getAllAppointments, getDoctorById, getDoctorsPatient, listAllDoctors, login, signup } from '../../controllers/doctor/doctor.js'
-import {getDoctorAppointments} from '../../controllers/appointment/appointment.js'
+import {getDoctorAppointments,deleteAppointment} from '../../controllers/appointment/appointment.js'
 
 
 const router = express.Router()
@@ -22,6 +22,10 @@ router.get('/patient/:id', auth, getDoctorsPatient);
 
 // get doctor's patients
 router.get('/patients',auth,getDoctorAppointments)
+
+// delete doctor appointments
+
+router.delete('/deleteAppointments',auth,deleteAppointment)
 
 
 // DEVELOPER ENDPOINTS
