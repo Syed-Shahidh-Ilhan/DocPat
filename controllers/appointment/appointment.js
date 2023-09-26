@@ -48,11 +48,15 @@ export const getDoctorAppointments = async (req, res) => {
 
 export const getPatientAppointments = async (req, res) => {
     const sortingOrder = req.query.sort;
+    const currentTime = Date.now();
     try {
-        const result = await Appointment.find({ patientId: req.body.patientId }).populate("doctorId").sort({
+        const pastAppointments = await Appointment.find({ patientId: req.body.patientId, time: {$lt: currentTime} }).populate("doctorId").sort({
             time: sortingOrder === 'a' ? 1 : -1
-        });;   // using find function to get all appointments for patient
-        res.status(200).send(result);
+        });    // using find function to get all appointments for doctor
+        const futureAppointments = await Appointment.find({ patientId: req.body.patientId, time: {$gt: currentTime} }).populate("doctorId").sort({
+            time: sortingOrder === 'a' ? 1 : -1
+        });
+        res.status(200).send({pastAppointments, futureAppointments});
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message);
